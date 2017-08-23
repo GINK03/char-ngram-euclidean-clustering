@@ -13,3 +13,15 @@ fasttextで学習
 ```cosnole
 $ fasttext -input metakeyword.txt -ouput model -dim 256 -thread 16
 ```
+dictionaryの作成
+```console
+$ python3 process.py --make_dic
+```
+clustering
+```console
+$ python3 process.py --fit
+```
+predict(クラスタリングしたファイルを出力)
+```console
+$ python3 process.py --predict
+```
