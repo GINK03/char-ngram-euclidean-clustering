@@ -65,4 +65,4 @@ if '--make3' in sys.argv:
   for cls, words in cls_words.items():
     print( cls, sorted(words)[:20] )
 
-  open('results/cls_words.json', 'w').write( json.dumps(cls_words, indent=2, ensure_ascii=False) )
+  open('results/cls_words.json', 'w').write( json.dumps(cls_words, sort_keys=True, indent=2, ensure_ascii=False) )
