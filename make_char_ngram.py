@@ -5,20 +5,18 @@ import pickle
 import sys
 if '--make1' in sys.argv:
   char_index = {}
-  with gzip.open('./201708.neologd.gz', 'rt') as f:
+  with gzip.open('./words.gz', 'rt') as f:
     for line in f:
       line = line.strip()
       #print( line )
       for char in set(line):
         if char_index.get(char) is None:
           char_index[char] = len(char_index)
-
   open('pickles/char_index.pkl', 'wb').write( pickle.dumps(char_index) )
-
 
   word_vec = {}
   vec_size = len(char_index)
-  with gzip.open('./201708.neologd.gz', 'rt') as f:
+  with gzip.open('./words.gz', 'rt') as f:
     for line in f:
       line = line.strip()
       vec = [0.0]*vec_size
@@ -30,6 +28,7 @@ if '--make1' in sys.argv:
 
   open('pickles/word_vec.pkl', 'wb').write( pickle.dumps(word_vec) )
 
+# クラスタリングの学習
 if '--make2' in sys.argv:
   word_vec = pickle.loads( open('pickles/word_vec.pkl', 'rb').read() )
   import numpy as np
@@ -48,6 +47,7 @@ if '--make2' in sys.argv:
  # 実際にクラスタリングする
 if '--make3' in sys.argv:
   import numpy as np
+  import json
   kmeans = pickle.loads(open('pickles/kmeans.pkl', 'rb').read() )
   word_vec = pickle.loads( open('pickles/word_vec.pkl', 'rb').read() )
 
@@ -64,3 +64,5 @@ if '--make3' in sys.argv:
 
   for cls, words in cls_words.items():
     print( cls, sorted(words)[:20] )
+
+  open('results/cls_words.json', 'w').write( json.dumps(cls_words, indent=2, ensure_ascii=False) )
